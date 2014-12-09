@@ -45,6 +45,11 @@
 				<input id="weatherDays" name="weatherDays" type="text" class="form-control" data-validation="number" data-validation-allowing="range[1;16]" />
 			</div>
 
+			<div class="form-group">
+				<label class="control-label">Number of days [1-16]</label>
+				<input id="weatherDays" name="weatherDays" type="number" min="1" max="16" required="required" />
+			</div>
+
 			<div class="form-group" data-role="fieldcontain">
 				<label for="scale">Fahrenheit / Celsius:</label>
 				<select name="scale" id="scale" data-role="slider">
@@ -70,7 +75,7 @@
 	function saveOptions() {
 		var options = {};
 		//Add all textual values
-		$('textarea, select, [type="hidden"], [type="password"], [type="text"]')
+		$('textarea, select, [type="hidden"], [type="password"], [type="text"], [type="number"]')
 			.each(function() {
 				options[$(this).attr('id')] = $(this).val();
 			})
@@ -84,7 +89,7 @@
 		var location = "pebblejs://close#" + encodeURIComponent(opts);
 		console.log("Warping to: " + location);
 		console.log(location);
-		document.location = location;
+		//document.location = location;
 	};
 	(function($, window) {
 		window.applyValidation = function() {
