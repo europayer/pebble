@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MenuWeather config</title>
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css" />
+	<style>
+	span.form-error.help-block {
+		display: block;
+		color: red;
+		margin-top: 6px;
+		padding-left: 0;
+	}
+	div.form-error {
+		padding: 6px 12px;
+		line-height: 180%;
+		background: #ffe5ed;
+		border-radius: 4px;
+		margin-bottom: 22px;
+		color: darkred;
+	}
+	input.valid {
+		background: url(http://formvalidator.net/img/icon-ok.png) no-repeat right center #e3ffe5;
+		color: #002f00;
+		border-color: #96b796 !important;
+	}
+	input.error {
+		background: url(http://formvalidator.net/img/icon-fail.png) no-repeat right center #ffebef;
+		color: #480000;
+	}
+	</style>
+</head>
+
+<body>
+	<div data-role="page" id="main">
+		<div data-role="header" class="jqm-header">
+			<h1>MenuWeather Config</h1>
+		</div>
+		<form id="mainForm" role="form">
+
+			<div class="form-group">
+				<label class="control-label">Number of days [1-16]</label>
+				<input id="weatherDays" name="weatherDays" type="text" class="form-control" data-validation="number" data-validation-allowing="range[1;16]" />
+			</div>
+
+			<div class="form-group" data-role="fieldcontain">
+				<label for="scale">Fahrenheit / Celsius:</label>
+				<select name="scale" id="scale" data-role="slider">
+					<option value="F">°F</option>
+					<option value="C">°C</option>
+				</select>
+			</div>
+
+			<!-- <div class="form-group">
+				<label class="control-label">Server validation</label>
+				<input class="form-control" name="code" value="secret" data-validation-help="The word is &quot;secret&quot;" data-validation="server" data-validation-url="http://formvalidator.net/validate-email.php" />
+			</div>
+			-->
+			<div>
+				<input type="submit" class="button" value="Save">
+			</div>
+		</form>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+	<script src="https://rawgit.com/victorjonsson/jQuery-Form-Validator/master/form-validator/jquery.form-validator.min.js"></script>
+	<script>
+	function saveOptions() {
+		var options = {};
+		//Add all textual values
+		$('textarea, select, [type="hidden"], [type="password"], [type="text"]')
+			.each(function() {
+				options[$(this).attr('id')] = $(this).val();
+			})
+			//Add all checkbox type values
+		$('[type="radio"], [type="checkbox"]').each(function() {
+			options[$(this).attr('id')] = $(this).is(':checked');
+		})
+		console.log(options);
+		var opts = JSON.stringify(options);
+		console.log(opts);
+		var location = "pebblejs://close#" + encodeURIComponent(opts);
+		console.log("Warping to: " + location);
+		console.log(location);
+		//document.location = location;
+	};
+	(function($, window) {
+		window.applyValidation = function() {
+			$.validate({
+				form: '#mainForm',
+				language: {
+					requiredFields: 'This field is required!'
+				},
+				validateOnBlur: true,
+				errorMessagePosition: 'element',
+				scrollToTopOnError: false,
+				borderColorOnError: 'purple',
+				onError: function($form) {
+					if (!$.formUtils.haltValidation) {
+						console.log('Invalid ' + $form.attr('id'));
+					}
+				},
+				onSuccess: function($form) {
+					console.log('Valid ' + $form.attr('id'));
+					saveOptions();
+					return false;
+				}
+			});
+		};
+		window.applyValidation();
+	})(jQuery, window);
+	</script>
+</body>
+
+</html>
