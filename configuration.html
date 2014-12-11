@@ -2,76 +2,84 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
+	<title>Config page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>MenuWeather config</title>
-	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css" />
-	<style>
-	span.form-error.help-block {
-		display: block;
-		color: red;
-		margin-top: 6px;
-		padding-left: 0;
-	}
-	div.form-error {
-		padding: 6px 12px;
-		line-height: 180%;
-		background: #ffe5ed;
-		border-radius: 4px;
-		margin-bottom: 22px;
-		color: darkred;
-	}
-	input.valid {
-		background: url(http://formvalidator.net/img/icon-ok.png) no-repeat right center #e3ffe5;
-		color: #002f00;
-		border-color: #96b796 !important;
-	}
-	input.error {
-		background: url(http://formvalidator.net/img/icon-fail.png) no-repeat right center #ffebef;
-		color: #480000;
-	}
-	</style>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 </head>
 
 <body>
 	<div data-role="page" id="main">
-		<div data-role="header" class="jqm-header">
-			<h1>MenuWeather Config</h1>
+		<div data-role="header">
+			<h1>MeanuWeather Config</h1>
 		</div>
-		<form id="mainForm" role="form">
-
-			<div class="form-group">
-				<label class="control-label">Number of days [1-16]</label>
-				<input id="weatherDays" name="weatherDays" type="text" class="form-control" data-validation="number" data-validation-allowing="range[1;16]" />
-			</div>
-
-			<div class="form-group">
-				<label class="control-label">Number of days [1-16]</label>
-				<input id="weatherDays" name="weatherDays" pattern="[0-9]*" type="number" min="1" max="16" required="required" />
-			</div>
-
-			<div class="form-group" data-role="fieldcontain">
-				<label for="scale">Fahrenheit / Celsius:</label>
-				<select name="scale" id="scale" data-role="slider">
-					<option value="F">°F</option>
-					<option value="C">°C</option>
-				</select>
-			</div>
-
-			<!-- <div class="form-group">
-				<label class="control-label">Server validation</label>
-				<input class="form-control" name="code" value="secret" data-validation-help="The word is &quot;secret&quot;" data-validation="server" data-validation-url="http://formvalidator.net/validate-email.php" />
-			</div>
-			-->
-			<div>
-				<input type="submit" class="button" value="Save">
-			</div>
-		</form>
+		<div role="main" class="ui-content">
+			<form id="mainForm" action="javascript:saveOptions();">
+				<div class="ui-field-contain">
+					<label for="fsGrade">Fahrenheit / Celsius:</label>
+					<fieldset data-role="controlgroup" data-type="horizontal" name="fsGrade" id="fsGrade">
+						<input type="radio" name="scale" id="F">
+						<label for="F">&deg;F</label>
+						<input type="radio" name="scale" id="C">
+						<label for="C">&deg;C</label>
+					</fieldset>
+				</div>
+				<div class="ui-field-contain">
+					<label for="numberOfDays">Number of forecast days:</label>
+					<select name="numberOfDays" id="numberOfDays">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+					</select>
+				</div>
+				<div class="ui-grid-b">
+					<div class="ui-block-a">
+						new city:
+					</div>
+					<div class="ui-block-b">
+						<label for="newCity" class="ui-hidden-accessible">new city:</label>
+						<input type="text" name="newCity" id="newCity" placeholder="Add new city...">
+					</div>
+					<div class="ui-block-c">
+						<input type="button" class="ui-btn ui-corner-all" value="Add" onclick="javascript:checkCity();">
+					</div>
+				</div>
+				<div id="storedCities">
+					Stored Cities:
+					<ul data-role="listview" data-inset="true" id="cityList">
+					</ul>
+				</div>
+				<div>
+					<input type="submit" class="ui-btn ui-corner-all" value="Save">
+				</div>
+			</form>
+		</div>
+		<div data-role="footer">
+			<h4>Have fun!</h4>
+		</div>
 	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
-	<script src="https://rawgit.com/victorjonsson/jQuery-Form-Validator/master/form-validator/jquery.form-validator.min.js"></script>
 	<script>
+	function checkCity() {
+		var newCity = '<li><h5>' + $('#newCity').val() + '<//h5><//li>';
+		$('#cityList').append(newCity);
+		$('#storedCities').show();
+		$('#main').enhanceWithin();
+	};
+
 	function saveOptions() {
 		var options = {};
 		//Add all textual values
@@ -91,31 +99,65 @@
 		console.log(location);
 		//document.location = location;
 	};
-	(function($, window) {
-		window.applyValidation = function() {
-			$.validate({
-				form: '#mainForm',
-				language: {
-					requiredFields: 'This field is required!'
-				},
-				validateOnBlur: true,
-				errorMessagePosition: 'element',
-				scrollToTopOnError: false,
-				borderColorOnError: 'purple',
-				onError: function($form) {
-					if (!$.formUtils.haltValidation) {
-						console.log('Invalid ' + $form.attr('id'));
-					}
-				},
-				onSuccess: function($form) {
-					console.log('Valid ' + $form.attr('id'));
-					saveOptions();
-					return false;
-				}
-			});
-		};
-		window.applyValidation();
-	})(jQuery, window);
+	$().ready(function() {
+		$(window).keydown(function(event) {
+			if (event.keyCode == 13) {
+				event.preventDefault();
+				return false;
+			}
+		});
+		$('#newCity').keyup(function(e) {
+			if (e.which == 13) {
+				checkCity();
+			}
+		});
+		//hide storedCities in case it is empty
+		$('#storedCities').hide();
+
+		//Set form values to whatever is passed in.
+		//Checkboxes:
+		//$( "input[type='checkbox']" ).prop( "checked", true ).checkboxradio( "refresh" );
+		//
+		//
+		//Radios:
+		//$( "input[type='radio']" ).prop( "checked", true ).checkboxradio( "refresh" );
+		//
+		//
+		//Selects:
+		//var myselect = $( "#selectfoo" );
+		//myselect[0].selectedIndex = 3;
+		//myselect.selectmenu( "refresh" );
+		//
+		//
+		//Sliders:
+		//$( "input[type='range']" ).val( 60 ).slider( "refresh" );
+		//
+		//
+		//Flip switches:
+		//They use the slider widget.
+		//var myswitch = $( "#selectbar" );
+		//myswitch[ 0 ].selectedIndex = 1;
+		//myswitch.slider( "refresh" );
+		var obj = jQuery.parseJSON(decodeURIComponent(window.location.search.substring(1)));
+		for (key in obj) {
+			var el = $("#" + [key]);
+			var val = obj[key];
+			if (el.is("select")) {
+				el[0].selectedIndex = val;
+				el.selectmenu("refresh");
+			} else if (el.attr("type") === "radio") {
+				el.prop("checked", val).checkboxradio("refresh");
+			} else if (key === 'cities' && val.length > 0){
+				$.each(val, function(i, arrVal) {
+					var newCity = '<li><h5>' + arrVal + '<//h5><//li>';
+					$('#cityList').append(newCity);
+				});
+				$('#storedCities').show();
+			} else {
+				el.val(val);
+			}
+		}
+	});
 	</script>
 </body>
 
