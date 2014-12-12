@@ -142,8 +142,8 @@
 		//myswitch[ 0 ].selectedIndex = 1;
 		//myswitch.slider( "refresh" );
 		var myUrl = decodeURIComponent(window.location.search.substring(1));
-		$('#url').append('<p>' + myUrl.numberOfDays + '<//p>')
 		var obj = jQuery.parseJSON(myUrl);
+		$('#url').append('<p>numberOfDays:' + obj.numberOfDays + '<//p>');
 		for (key in obj) {
 			var el = $("#" + [key]);
 			var val = obj[key];
