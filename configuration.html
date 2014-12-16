@@ -1004,7 +1004,7 @@
 			$.ajax({
 				url: "http://autocomplete.wunderground.com/aq",
 				dataType: "jsonp",
-				data: query,
+				data: query
 			});
 		}
 	};
@@ -1028,11 +1028,13 @@
 		console.log("Warping to: " + location);
 		document.location = location;
 	};
-	$(document).bind('mobileinit', function() {
-		$.mobile.loader.prototype.options.text = "loading";
-		$.mobile.loader.prototype.options.textVisible = true;
-		$.mobile.loader.prototype.options.theme = "c";
-		$.mobile.loader.prototype.options.html = "";
+	
+	$(document).ajaxStart(function() {
+		$.mobile.loading('show');
+	});
+
+	$(document).ajaxStop(function() {
+		$.mobile.loading('hide');
 	});
 
 	$(document).bind('pageinit', function() {
