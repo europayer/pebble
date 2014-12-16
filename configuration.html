@@ -976,12 +976,13 @@
 	var cityResultCallback = function(data) {
 		if (data.RESULTS.length > 1) {
 			$('#foundCityList').empty();
+			$('#foundCityList').append('<option value="" selected="selected">Please select a city...<//option>');
 			$('#foundCityDiv label').text('Found ' + data.RESULTS.length + ' cities starting with "' + $('#newCity').val() + '". Please select one to add to stored cities.');
 			$.each(data.RESULTS, function(i, cityDetails) {
-				var foundCity = '<option value=' + cityDetails.zmw + '>' + cityDetails.name + '<//option>';
-				$('#foundCityList').append(foundCity);
+				$('#foundCityList').append('<option value=' + cityDetails.zmw + '>' + cityDetails.name + '<//option>');
 
 			});
+			$('#foundCityList').selectmenu("refresh");
 			$('#foundCityDiv').show();
 		} else if (data.RESULTS.length == 1) {
 			addCity(data.RESULTS[0].zmw, data.RESULTS[0].name);
