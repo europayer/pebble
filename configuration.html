@@ -868,53 +868,6 @@
 		}
 	}(jQuery);
 	</script>
-	<style type="text/css">
-	/* Left transition */
-	
-	li.ui-li.left {
-		-webkit-transition: -webkit-transform 250ms ease;
-		-webkit-transform: translateX(-100%);
-		-moz-transition: -moz-transform 250ms ease;
-		-moz-transform: translateX(-100%);
-		-o-transition: -o-transform 250ms ease;
-		-o-transform: translateX(-100%);
-		transition: transform 250ms ease;
-		transform: translateX(-100%);
-		border-top-width: 0;
-		/* We switch to border bottom on previous list item */
-		
-		border-right-width: 1px;
-	}
-	/* Right transition */
-	
-	li.ui-li.right {
-		-webkit-transition: -webkit-transform 250ms ease;
-		-webkit-transform: translateX(100%);
-		-moz-transition: -moz-transform 250ms ease;
-		-moz-transform: translateX(100%);
-		-o-transition: -o-transform 250ms ease;
-		-o-transform: translateX(100%);
-		transition: transform 250ms ease;
-		transform: translateX(100%);
-		border-top-width: 0;
-		/* We switch to border bottom on previous list item */
-		
-		border-left-width: 1px;
-	}
-	/* Border bottom for the previous list item during the transition*/
-	
-	li.ui-li.border {
-		border-bottom-width: 1px;
-	}
-	/* Hide the delete button on touch devices */
-	
-	.touch .delete {
-		display: none;
-	}
-	.touch .ui-link-inherit {
-		padding-right: 15px !important;
-	}
-	</style>
 </head>
 
 <body>
@@ -950,7 +903,7 @@
 						<input type="text" name="newCity" id="newCity" placeholder="Add a new city...">
 					</div>
 					<div class="ui-block-c">
-						<input type="button" class="ui-btn ui-corner-all" value="Add" onclick="javascript:checkCity();">
+						<input type="button" class="ui-btn" value="Add" onclick="javascript:checkCity();">
 					</div>
 				</div>
 				<div id="cityResultDiv">
@@ -965,7 +918,7 @@
 				</div>
 				<div id="storedCityDiv">
 					<label for="storedCityList">Stored Cities:</label>
-					<ul id="storedCityList" data-role="listview" class="touch" data-split-icon="delete" data-split-theme="d">
+					<ul id="storedCityList" data-role="listview" data-split-icon="delete" data-split-theme="d">
 					</ul>
 				</div>
 				<div>
@@ -983,7 +936,7 @@
 					<div id="prevSosText">&nbsp;</div>
 				</div>
 				<div>
-					<input type="submit" class="ui-btn ui-corner-all" value="Save">
+					<input type="submit" class="ui-btn" value="Save">
 				</div>
 			</form>
 		</div>
@@ -994,53 +947,25 @@
 	<script>
 	var options = {};
 
-	$('#foundCityList').change(function() {
-		addCity($('#foundCityList').val(), $("#foundCityList option:selected").text());
-		$('#foundCityDiv').hide();
-	});
-
-	$('#sosTitle').keyup(function() {
-		$('#prevSosTitle').html($('#sosTitle').val());
-	});
-
-	$('#sosText').keyup(function() {
-		$('#prevSosText').html($('#sosText').val());
-	});
-
 	var addCity = function(newCityId, newCityName) {
-		var delCity = "javascript:removeCity('" + newCityId + "');"
-		var newCityItem = '<li id="' + newCityId + '"><a href="#"><span class="ui-icon-bars ui-btn-icon-left" style="position:relative;" />' + newCityName + '<//a><a href=' + delCity + ' class="delete">Delete<//a><//li>';
+		var delCityFn = "javascript:removeCity('" + newCityId + "');"
+		var newCityItem = '<li id="' + newCityId + '"><a href="#"><span class="ui-icon-bars ui-btn-icon-left" style="position:relative;" />' + newCityName + '<//a><a href="' + delCityFn + '"<//a><//li>';
 		$('#storedCityList').append(newCityItem);
 		$('#storedCityList').listview('refresh');
 		if (!$('#storedCityDiv').is(':visible')) {
-			$('#storedCityDiv').show();
+			$('#storedCityDiv').fadeIn('slow');
 		}
 		$('#newCity').val('');
 	};
 
 	var removeCity = function(item, transition) {
-		var listitem = $("#" + item);
-		if (transition) {
-			listitem
-			// Add the class for the transition direction
-				.addClass(transition)
-				// When the transition is done...
-				.on("webkitTransitionEnd transitionend otransitionend", function() {
-					// ...the list item will be removed
-					listitem.remove();
-					// ...the list will be refreshed and the temporary class for border styling removed
-					$("#storedCityList").listview("refresh").find(".ui-li.border").removeClass("border");
-				})
-				// During the transition the previous list item should get bottom border
-				.prev("li.ui-li").addClass("border");
-		} else {
-			// If it's not a touch device or the CSS transition isn't supported just remove the list item and refresh the list
-			listitem.remove();
+		$("#" + item).fadeOut("slow", function() {
+			$("#" + item).remove();
 			$("#storedCityList").listview("refresh");
-		}
-		if ($('#storedCityList').children().length === 0){
-			$('#storedCityDiv').hide();
-		}
+			if ($('#storedCityList').children().length === 0) {
+				$('#storedCityDiv').hide();
+			}
+		});
 	};
 
 	var cityResultCallback = function(data) {
@@ -1121,26 +1046,6 @@
 	});
 
 	$(document).bind('pageinit', function() {
-		// Swipe to remove list item
-		$(document).on("swipeleft swiperight", "#storedCityList li.ui-li", function(event) {
-			var listitem = $(this),
-				// These are the classnames used for the CSS transition
-				dir = event.type === "swipeleft" ? "left" : "right",
-				// Check if the browser supports the transform (3D) CSS transition
-				transition = $.support.cssTransform3d ? dir : false;
-			removeCity(listitem, transition);
-		});
-		// If it's not a touch device...
-		if (!$.mobile.support.touch) {
-			// Remove the class that is used to hide the delete button on touch devices
-			$("#storedCityList").removeClass("touch");
-			// Click delete split-button to remove list item
-			$(".delete").on("click", function() {
-				var listitem = $(this).parent("li.ui-li");
-				console.log("Remove city" + listitem.id);
-				removeCity($(this).parent("li.ui-li"));
-			});
-		}
 		$("#storedCityList").sortable();
 		$("#storedCityList").disableSelection();
 		$("#storedCityList").bind("sortstop", function(event, ui) {
@@ -1149,26 +1054,45 @@
 	});
 
 	$().ready(function() {
-		for (i = 1; i <= 16; i++) {
-			var counter = '<option value=' + i + '>' + i + '<//option>';
-			$('#numberOfDays').append(counter);
-		};
 		$(window).keydown(function(event) {
 			if (event.keyCode == 13) {
 				event.preventDefault();
 				return false;
 			}
 		});
+
 		$('#newCity').keyup(function(e) {
 			if (e.which == 13) {
 				checkCity();
 			}
 		});
+		
 		//hide storedCityList in case it is empty
 		$('#storedCityDiv').hide();
 		$('#foundCityDiv').hide();
 		$('#foundNoCityDiv').hide();
 
+		$('#foundCityList').change(function() {
+			addCity($('#foundCityList').val(), $("#foundCityList option:selected").text());
+			$('#foundCityDiv').hide();
+		});
+
+		$('#sosTitle').keyup(function() {
+			$('#prevSosTitle').html($('#sosTitle').val());
+		});
+
+		$('#sosText').keyup(function(event) {
+			if (event.keyCode == 13) {
+				$('#sosText').val($('#sosText').val() + '\n');
+			}
+			$('#prevSosText').html($('#sosText').val().replace(/\n/g, "<br />"));
+		});
+
+		//Preset fields 
+		for (i = 1; i <= 16; i++) {
+			var counter = '<option value=' + i + '>' + i + '<//option>';
+			$('#numberOfDays').append(counter);
+		};
 
 		var myUrl = decodeURIComponent(window.location.search.substring(1));
 		var obj = jQuery.parseJSON(myUrl);
