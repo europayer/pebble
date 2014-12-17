@@ -917,9 +917,8 @@
 					</div>
 				</div>
 				<div id="storedCityDiv">
-					<label for="storedCityList">Stored Cities:</label>
-					<ul id="storedCityList" data-role="listview" data-split-icon="delete" data-split-theme="d">
-					</ul>
+					<label for="storedCityList">Stored Cities:<br><br></label>
+					<ul id="storedCityList" data-role="listview" data-split-icon="delete" data-split-theme="d" />
 				</div>
 				<div>
 					<hr />
@@ -972,20 +971,27 @@
 		if (data.RESULTS.length > 1) {
 			$('#foundCityList').empty();
 			$('#foundCityList').append('<option value="" selected="selected">Please select a city...<//option>');
-			$('#foundCityDiv label').text('Found ' + data.RESULTS.length + ' cities starting with "' + $('#newCity').val() + '". Please select one to add to stored cities.');
+			$('#foundCityDiv label').html('Found ' + data.RESULTS.length + ' cities starting with "' + $('#newCity').val() + '".<br />Please select one to add to stored cities.');
+			var tempCities = [];
+			$('#storedCityList').children().each(function(i, val) {
+				tempCities.push(val.id);
+			});
 			$.each(data.RESULTS, function(i, cityDetails) {
-				$('#foundCityList').append('<option value=' + encodeCId(cityDetails.zmw) + '>' + cityDetails.name + '<//option>');
-
+				var cId = encodeCId(cityDetails.zmw);
+				if (tempCities.indexOf(cId) < 1) {
+					$('#foundCityList').append('<option value=' + cId + '>' + cityDetails.name + '<//option>');
+				}
 			});
 			$('#foundCityList').selectmenu("refresh");
 			$('#foundCityDiv').show();
+			$('#foundNoCityDiv').hide();
 		} else if (data.RESULTS.length == 1) {
 			addCity(encodeCId(data.RESULTS[0].zmw), data.RESULTS[0].name);
-			$('#foundCityList').empty();
 			$('#foundCityDiv').hide();
 			$('#foundNoCityDiv').hide();
 
 		} else {
+			$('#foundCityDiv').hide();
 			$('#foundNoCityDiv').show();
 		}
 	};
@@ -1066,7 +1072,7 @@
 				checkCity();
 			}
 		});
-		
+
 		//hide storedCityList in case it is empty
 		$('#storedCityDiv').hide();
 		$('#foundCityDiv').hide();
