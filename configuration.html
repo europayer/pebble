@@ -881,8 +881,8 @@
 					<h4>Weather-Config</h4>
 				</div>
 				<div class="ui-field-contain">
-					<label for="fsGrade">Fahrenheit / Celsius:</label>
-					<fieldset data-role="controlgroup" data-type="horizontal" name="fsGrade" id="fsGrade">
+					<label for="fsScale">Fahrenheit / Celsius:</label>
+					<fieldset data-role="controlgroup" data-type="horizontal" name="fsScale" id="fsScale">
 						<input type="radio" name="scale" id="F">
 						<label for="F">&deg;F</label>
 						<input type="radio" name="scale" id="C">
@@ -894,17 +894,12 @@
 					<select name="numberOfDays" id="numberOfDays">
 					</select>
 				</div>
-				<div class="ui-grid-b" id="addNewCityDiv">
-					<div class="ui-block-a">
-						New city:
-					</div>
-					<div class="ui-block-b">
-						<label for="newCity" class="ui-hidden-accessible">New city:</label>
-						<input type="text" name="newCity" id="newCity" placeholder="Add a new city...">
-					</div>
-					<div class="ui-block-c">
-						<input type="button" class="ui-btn" value="Add" onclick="javascript:checkCity();">
-					</div>
+				<div id="storedCityDiv">
+					<label for="storedCityList">Stored Cities:</label>
+					<ul id="storedCityList" data-role="listview" data-inset="true" data-split-icon="delete" data-split-theme="d" />
+				</div>
+				<div>
+					<ul id="autocomplete" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Add a new city..." data-filter-theme="a"></ul>
 				</div>
 				<div id="cityResultDiv">
 					<div id="foundCityDiv">
@@ -912,13 +907,10 @@
 						<select name="foundCityList" id="foundCityList">
 						</select>
 					</div>
-					<div id="foundNoCityDiv">
-						<p>No city found! Please check your spelling!</p>
+					<div id="foundOneCityDiv">
 					</div>
-				</div>
-				<div id="storedCityDiv">
-					<label for="storedCityList">Stored Cities:</label>
-					<ul id="storedCityList" data-role="listview" data-inset="true" data-split-icon="delete" data-split-theme="d" />
+					<div id="foundNoCityDiv">
+					</div>
 				</div>
 				<div>
 					<hr />
@@ -954,7 +946,6 @@
 		if (!$('#storedCityDiv').is(':visible')) {
 			$('#storedCityDiv').fadeIn('slow');
 		}
-		$('#newCity').val('');
 	};
 
 	var removeCity = function(item, transition) {
@@ -968,50 +959,41 @@
 	};
 
 	var cityResultCallback = function(data) {
+		var tempCities = [];
+		$('#storedCityList').children().each(function(i, val) {
+			tempCities.push(val.id);
+		});
 		if (data.RESULTS.length > 1) {
 			$('#foundCityList').empty();
 			$('#foundCityList').append('<option value="" selected="selected">Please select a city...<//option>');
-			$('#foundCityDiv label').html('Found ' + data.RESULTS.length + ' cities starting with "' + $('#newCity').val() + '".<br />Please select one to add to stored cities.');
-			var tempCities = [];
-			$('#storedCityList').children().each(function(i, val) {
-				tempCities.push(val.id);
-			});
 			$.each(data.RESULTS, function(i, cityDetails) {
 				var cId = encodeCId(cityDetails.zmw);
 				if (tempCities.indexOf(cId) < 1) {
 					$('#foundCityList').append('<option value=' + cId + '>' + cityDetails.name + '<//option>');
 				}
 			});
+			$('#foundCityDiv label').html('Found ' + ($('#foundCityList').children().length - 1) + ' cities starting with "' + options.serachCityValue + '".<br />Please select one to add to stored cities.');
 			$('#foundCityList').selectmenu("refresh");
 			$('#foundCityDiv').show();
 			$('#foundNoCityDiv').hide();
+			$('#foundOneCityDiv').hide();
 		} else if (data.RESULTS.length == 1) {
-			addCity(encodeCId(data.RESULTS[0].zmw), data.RESULTS[0].name);
+			var cId = encodeCId(data.RESULTS[0].zmw);
+			if (tempCities.indexOf(cId) < 1) {
+				addCity(cId, data.RESULTS[0].name);
+				$('#foundOneCityDiv').html("Added '" + data.RESULTS[0].name + "'.");
+
+			} else {
+				$('#foundOneCityDiv').html("'" + data.RESULTS[0].name + "' already in stored city list.");
+			}
+			$('#foundOneCityDiv').show();
 			$('#foundCityDiv').hide();
 			$('#foundNoCityDiv').hide();
-
 		} else {
+			$('#foundOneCityDiv').hide();
 			$('#foundCityDiv').hide();
+			$('#foundNoCityDiv').html("<b>No city found starting with '" + options.serachCityValue + "'! Please check your spelling.<//b>");
 			$('#foundNoCityDiv').show();
-		}
-	};
-
-	function checkCity() {
-		var newCity = $('#newCity').val().trim();
-		if (newCity !== '') {
-
-			var query = {
-				'format': 'JSON',
-				'cb': 'cityResultCallback',
-				'query': newCity,
-				'h': '0'
-			};
-
-			$.ajax({
-				url: "http://autocomplete.wunderground.com/aq",
-				dataType: "jsonp",
-				data: query
-			});
 		}
 	};
 
@@ -1057,6 +1039,30 @@
 		$("#storedCityList").bind("sortstop", function(event, ui) {
 			$('#storedCityList').listview('refresh');
 		});
+		var searching = null;
+		$("#autocomplete").on("filterablebeforefilter", function(e, data) {
+			if (searching) {
+				clearTimeout(searching);
+			}
+			options.serachCityValue = $(data.input).val();
+			if (options.serachCityValue && options.serachCityValue.length > 2) {
+				searching = setTimeout(function() {
+					$(this).html("<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'><//span><//div><//li>");
+					var query = {
+						'format': 'JSON',
+						'cb': 'cityResultCallback',
+						'query': options.serachCityValue,
+						'h': '0'
+					};
+
+					$.ajax({
+						url: "http://autocomplete.wunderground.com/aq",
+						dataType: "jsonp",
+						data: query
+					});
+				}, 500);
+			}
+		});
 	});
 
 	$().ready(function() {
@@ -1064,12 +1070,6 @@
 			if (event.keyCode == 13) {
 				event.preventDefault();
 				return false;
-			}
-		});
-
-		$('#newCity').keyup(function(e) {
-			if (e.which == 13) {
-				checkCity();
 			}
 		});
 
