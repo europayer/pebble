@@ -4,6 +4,7 @@
 <head>
 	<title>Config page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -899,13 +900,12 @@
 					<ul id="storedCityList" data-role="listview" data-inset="true" data-split-icon="delete" data-split-theme="d" />
 				</div>
 				<div>
-					<ul id="autocomplete" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Add a new city..." data-filter-theme="a"></ul>
+					<ul id="autocomplete" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Add a new city... (at least 3 characters)" data-filter-theme="a"></ul>
 				</div>
 				<div id="cityResultDiv">
 					<div id="foundCityDiv">
-						<label for="foundCityList">&nbsp;</label>
-						<select name="foundCityList" id="foundCityList">
-						</select>
+						<label for="foundCityList">Found cities:</label>
+						<ul id="foundCityList" data-role="listview" data-inset="true" data-split-icon="plus" data-split-theme="d" />
 					</div>
 					<div id="foundOneCityDiv">
 					</div>
@@ -918,9 +918,9 @@
 				</div>
 				<div>
 					<label for="sosTitle">Title:</label>
-					<input type="text" maxlength="32" name="sosTitle" id="sosTitle" placeholder="Notfallinfo:">
+					<input type="text" maxlength="32" name="sosTitle" id="sosTitle" placeholder="Emergency Info:">
 					<label for="sosText">Text:</label>
-					<textarea rows="4" cols="16" maxlength="64" name="sosText" id="sosText" placeholder="Bitte im Notfall kontaktieren:"></textarea>
+					<textarea rows="4" cols="16" maxlength="64" name="sosText" id="sosText" placeholder="Please contact the following Number: xxx-xxxxxxx"></textarea>
 				</div>
 				<div>
 					<div id="prevSosTitle">&nbsp;</div>
@@ -938,7 +938,11 @@
 	<script>
 	var options = {};
 
-	var addCity = function(newCityId, newCityName) {
+	var addCity = function(newCityId, newCityName, remove) {
+		if (remove){
+			$("#found" + newCityId).fadeOut('slow', function(){$("#found" + newCityId).remove();});
+			$('#foundCityList').listview('refresh');
+		}
 		var delCityFn = "javascript:removeCity('" + newCityId + "');"
 		var newCityItem = '<li id="' + newCityId + '"><a href="#"><span class="ui-icon-bars ui-btn-icon-left" style="position:relative;" />' + newCityName + '<//a><a href="' + delCityFn + '"<//a><//li>';
 		$('#storedCityList').append(newCityItem);
@@ -965,15 +969,31 @@
 		});
 		if (data.RESULTS.length > 1) {
 			$('#foundCityList').empty();
-			$('#foundCityList').append('<option value="" selected="selected">Please select a city...<//option>');
+			//$('#foundCityList').append('<option value="" selected="selected">Please select a city...<//option>');
 			$.each(data.RESULTS, function(i, cityDetails) {
-				var cId = encodeCId(cityDetails.zmw);
-				if (tempCities.indexOf(cId) < 1) {
-					$('#foundCityList').append('<option value=' + cId + '>' + cityDetails.name + '<//option>');
+				if (cityDetails.zmw) {
+					var cId = encodeCId(cityDetails.zmw);
+
+					//if (tempCities.indexOf(cId) < 1) {
+					//	$('#foundCityList').append('<option value=' + cId + '>' + cityDetails.name + '<//option>');
+					//} else {
+					//	$('#foundCityList').append('<option disabled value=' + cId + '>' + cityDetails.name + ' (added already)<//option>');
+					//}
+
+					//** LIST
+					var cityItem = '';
+					if (tempCities.indexOf(cId) < 1) {
+						var addCityFn = "javascript:addCity('" + cId + "','" + cityDetails.name + "', 'true');"
+						cityItem = '<li id="found' + cId + '"><a href="#">' + cityDetails.name + '<//a><a href="' + addCityFn + '"<//a><//li>';
+					}
+					$('#foundCityList').append(cityItem);
 				}
+				//** LIST
+
 			});
-			$('#foundCityDiv label').html('Found ' + ($('#foundCityList').children().length - 1) + ' cities starting with "' + options.serachCityValue + '".<br />Please select one to add to stored cities.');
-			$('#foundCityList').selectmenu("refresh");
+			$('#foundCityList').listview('refresh');
+			$('#foundCityDiv label').html('Found ' + data.RESULTS.length + ' cities starting with "' + options.serachCityValue + '".<br />Please select one to add to stored cities.');
+			//$('#foundCityList').selectmenu("refresh");
 			$('#foundCityDiv').show();
 			$('#foundNoCityDiv').hide();
 			$('#foundOneCityDiv').hide();
@@ -1051,7 +1071,7 @@
 					var query = {
 						'format': 'JSON',
 						'cb': 'cityResultCallback',
-						'query': options.serachCityValue,
+						'query': options.serachCityValue.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue"),
 						'h': '0'
 					};
 
