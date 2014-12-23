@@ -7,10 +7,18 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<style type="text/css">
+	.pebbleWatch {
+		background-image: url("watch.png");
+		height: 372px;
+		width: 236px;
+	}
 	.pebblePreviewFrame {
+		padding-top: 103px;
+		padding-left: 1px;
+		margin: 0 auto;
 		height: 168px;
 		width: 144px;
-		border: 1px solid #000000;
+		border: 0px;
 		overflow: hidden;
 	}
 	.pebblePreviewFrame .pebblePreviewContent {
@@ -18,6 +26,7 @@
 		height: 168px;
 		overflow: scroll;
 		padding-bottom: 15px;
+		background-color: #fff;
 	}
 	.wordwrapPebble {
 		width: 144px;
@@ -34,11 +43,25 @@
 		white-space: -o-pre-wrap;
 		/* Opera 7 */
 	}
+	.sosWrapper {
+		width: 159px;
+		height: 28px;
+	}
+	.sosImg {
+		width: 28px;
+		height: 28px;
+		float: left;
+		background-image: url("sos.png");
+	}
 	.pebbleTitle {
 		font-weight: bold;
+		font-size: 21px;
+		width: 120px;
+		float: left;
 	}
 	.pebbleText {
 		font-weight: normal;
+		font-size: 21px;
 	}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -186,8 +209,6 @@
 	});
 
 	$().ready(function() {
-
-
 		$('.noDefaultAction').on('keydown', function(event) {
 			if (event.keyCode == 13) {
 				event.preventDefault();
@@ -209,7 +230,7 @@
 		});
 
 		$('#sosText').keyup(function(event) {
-			$('#prevSosText').html($('#sosText').val().replace(/\n/g, "<br />"));
+			$('#prevSosText').html($('#sosText').val());
 		});
 
 		//Preset fields 
@@ -220,6 +241,8 @@
 
 		var myUrl = decodeURIComponent(window.location.search.substring(1));
 		var obj = jQuery.parseJSON(myUrl);
+		var titleFound = false,
+			textFound = false;
 		for (key in obj) {
 			var el = $("#" + [key]);
 			var val = obj[key];
@@ -238,9 +261,21 @@
 			} else {
 				el.val(val);
 			}
+			if (key === 'sosTitle' && val) {
+				titleFound = true;
+			}
+			if (key === 'sosText' && val) {
+				textFound = true;
+			}
 			$('#sosTitle').keyup();
 			$('#sosText').keyup();
 			$('#storedCityList').listview('refresh');
+		}
+		if (!titleFound) {
+			$('#prevSosTitle').html('Emergency Info:');
+		}
+		if (!textFound) {
+			$('#prevSosText').html('Please contact the following Number: xxx-xxxxxxx');
 		}
 	});
 	</script>
@@ -297,11 +332,15 @@
 					<label for="sosText">Text:</label>
 					<textarea rows="4" cols="16" name="sosText" id="sosText" placeholder="Please contact the following Number: xxx-xxxxxxx"></textarea>
 				</div>
-
-				<div class="pebblePreviewFrame">
-					<div class="pebblePreviewContent">
-						<div class="pebbleTitle wordwrapPebble" id="prevSosTitle"></div>
-						<div class="pebbleText wordwrapPebble" id="prevSosText"></div>
+				<div class="pebbleWatch">
+					<div class="pebblePreviewFrame">
+						<div class="pebblePreviewContent">
+							<div class="sosWrapper">
+								<span class="sosImg"></span>
+								<div class="pebbleTitle wordwrapPebble" id="prevSosTitle"></div>
+							</div>
+							<div class="pebbleText wordwrapPebble" id="prevSosText"></div>
+						</div>
 					</div>
 				</div>
 				<div>
