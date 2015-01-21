@@ -61,7 +61,7 @@
 	}
 	.pebbleText {
 		font-weight: normal;
-		font-size: 21px;
+		font-size: 25px;
 	}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -233,12 +233,6 @@
 			$('#prevSosText').html($('#sosText').val());
 		});
 
-		//Preset fields 
-		for (i = 1; i <= 16; i++) {
-			var counter = '<option value=' + i + '>' + i + '<//option>';
-			$('#numberOfDays').append(counter);
-		};
-
 		var myUrl = decodeURIComponent(window.location.search.substring(1));
 		var obj = jQuery.parseJSON(myUrl);
 		var titleFound = false,
@@ -252,7 +246,7 @@
 			} else if (el.attr("type") === "radio") {
 				if (val === "true"){
 					el.prop("checked", val).checkboxradio("refresh");
-				}
+				}	
 			} else if (key === 'cities' && val.length > 0) {
 				$.each(val, function(i, arrVal) {
 					var cId = arrVal[0];
@@ -301,11 +295,6 @@
 						<input type="radio" name="scale" id="C">
 						<label for="C">&deg;C</label>
 					</fieldset>
-				</div>
-				<div class="ui-field-contain">
-					<label for="numberOfDays">Number of forecast days:</label>
-					<select name="numberOfDays" id="numberOfDays">
-					</select>
 				</div>
 				<div id="storedCityDiv">
 					<label for="storedCityList">Stored Cities:</label>
