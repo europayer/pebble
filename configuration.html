@@ -250,7 +250,9 @@
 				el[0].selectedIndex = val - 1;
 				el.selectmenu("refresh");
 			} else if (el.attr("type") === "radio") {
-				el.prop("checked", val).checkboxradio("refresh");
+				if (val === "true"){
+					el.prop("checked", val).checkboxradio("refresh");
+				}
 			} else if (key === 'cities' && val.length > 0) {
 				$.each(val, function(i, arrVal) {
 					var cId = arrVal[0];
