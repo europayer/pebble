@@ -69,8 +69,90 @@
 	<script src="https://rawgit.com/europayer/pebble/master/jquery-ui-custom-punch.js"></script>
 	<script>
 	var options = {};
-	var langArr = [["Afrikaans", "AF"],
-	["Albanian", "AL"], ["Arabic", "AR"], ["Armenian", "HY"], ["Azerbaijani", "AZ"], ["Basque", "EU"], ["Belarusian", "BY"], ["Bulgarian", "BU"], ["British English", "LI"], ["Burmese", "MY"], ["Catalan", "CA"], ["Chinese - Simplified", "CN"], ["Chinese - Traditional", "TW"], ["Croatian", "CR"], ["Czech", "CZ"], ["Danish", "DK"], ["Dhivehi", "DV"], ["Dutch", "NL"], ["English", "EN"], ["Esperanto", "EO"], ["Estonian", "ET"], ["Farsi", "FA"], ["Finnish", "FI"], ["French", "FR"], ["French Canadian", "FC"], ["Galician", "GZ"], ["German", "DL"], ["Georgian", "KA"], ["Greek", "GR"], ["Gujarati", "GU"], ["Haitian Creole", "HT"], ["Hebrew", "IL"], ["Hindi", "HI"], ["Hungarian", "HU"], ["Icelandic", "IS"], ["Ido", "IO"], ["Indonesian", "ID"], ["Irish Gaelic", "IR"], ["Italian", "IT"], ["Japanese", "JP"], ["Javanese", "JW"], ["Khmer", "KM"], ["Korean", "KR"], ["Kurdish", "KU"], ["Latin", "LA"], ["Latvian", "LV"], ["Lithuanian", "LT"], ["Low German", "ND"], ["Macedonian", "MK"], ["Maltese", "MT"], ["Mandinka", "GM"], ["Maori", "MI"], ["Marathi", "MR"], ["Mongolian", "MN"], ["Norwegian", "NO"], ["Occitan", "OC"], ["Pashto", "PS"], ["Plautdietsch", "GN"], ["Polish", "PL"], ["Portuguese", "BR"], ["Punjabi", "PA"], ["Romanian", "RO"], ["Russian", "RU"], ["Serbian", "SR"], ["Slovak", "SK"], ["Slovenian", "SL"], ["Spanish", "SP"], ["Swahili", "SI"], ["Swedish", "SW"], ["Swiss", "CH"], ["Tagalog", "TL"], ["Tatarish", "TT"], ["Thai", "TH"], ["Turkish", "TR"], ["Turkmen", "TK"], ["Ukrainian", "UA"], ["Uzbek", "UZ"], ["Vietnamese", "VU"], ["Welsh", "CY"], ["Wolof", "SN"], ["Yiddish - transliterated", "JI"], ["Yiddish - unicode", "YI"]];
+	var langArr = [
+		["Afrikaans", "AF"],
+		["Albanian", "AL"],
+		["Arabic", "AR"],
+		["Armenian", "HY"],
+		["Azerbaijani", "AZ"],
+		["Basque", "EU"],
+		["Belarusian", "BY"],
+		["Bulgarian", "BU"],
+		["British English", "LI"],
+		["Burmese", "MY"],
+		["Catalan", "CA"],
+		["Chinese - Simplified", "CN"],
+		["Chinese - Traditional", "TW"],
+		["Croatian", "CR"],
+		["Czech", "CZ"],
+		["Danish", "DK"],
+		["Dhivehi", "DV"],
+		["Dutch", "NL"],
+		["English", "EN"],
+		["Esperanto", "EO"],
+		["Estonian", "ET"],
+		["Farsi", "FA"],
+		["Finnish", "FI"],
+		["French", "FR"],
+		["French Canadian", "FC"],
+		["Galician", "GZ"],
+		["German", "DL"],
+		["Georgian", "KA"],
+		["Greek", "GR"],
+		["Gujarati", "GU"],
+		["Haitian Creole", "HT"],
+		["Hebrew", "IL"],
+		["Hindi", "HI"],
+		["Hungarian", "HU"],
+		["Icelandic", "IS"],
+		["Ido", "IO"],
+		["Indonesian", "ID"],
+		["Irish Gaelic", "IR"],
+		["Italian", "IT"],
+		["Japanese", "JP"],
+		["Javanese", "JW"],
+		["Khmer", "KM"],
+		["Korean", "KR"],
+		["Kurdish", "KU"],
+		["Latin", "LA"],
+		["Latvian", "LV"],
+		["Lithuanian", "LT"],
+		["Low German", "ND"],
+		["Macedonian", "MK"],
+		["Maltese", "MT"],
+		["Mandinka", "GM"],
+		["Maori", "MI"],
+		["Marathi", "MR"],
+		["Mongolian", "MN"],
+		["Norwegian", "NO"],
+		["Occitan", "OC"],
+		["Pashto", "PS"],
+		["Plautdietsch", "GN"],
+		["Polish", "PL"],
+		["Portuguese", "BR"],
+		["Punjabi", "PA"],
+		["Romanian", "RO"],
+		["Russian", "RU"],
+		["Serbian", "SR"],
+		["Slovak", "SK"],
+		["Slovenian", "SL"],
+		["Spanish", "SP"],
+		["Swahili", "SI"],
+		["Swedish", "SW"],
+		["Swiss", "CH"],
+		["Tagalog", "TL"],
+		["Tatarish", "TT"],
+		["Thai", "TH"],
+		["Turkish", "TR"],
+		["Turkmen", "TK"],
+		["Ukrainian", "UA"],
+		["Uzbek", "UZ"],
+		["Vietnamese", "VU"],
+		["Welsh", "CY"],
+		["Wolof", "SN"],
+		["Yiddish - transliterated", "JI"],
+		["Yiddish - unicode", "YI"]
+	];
 
 	var addCity = function(newCityId, newCityName, remove) {
 		if (remove) {
@@ -141,6 +223,17 @@
 		}
 	};
 
+	function getQueryParam(variable, default_) {
+		var query = location.search.substring(1);
+		var vars = query.split('&');
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			if (pair[0] == variable)
+				return decodeURIComponent(pair[1]);
+		}
+		return default_ || false;
+	}
+
 	function saveOptions() {
 		//Add all textual values
 		$('textarea, select, [type="hidden"], [type="password"], [type="text"], [type="number"]').each(function() {
@@ -156,9 +249,10 @@
 		});
 		console.log(options);
 		var opts = JSON.stringify(options);
-		var location = "pebblejs://close#" + encodeURIComponent(opts);
-		console.log("Warping to: " + location);
-		document.location = location;
+		var location = encodeURIComponent(opts);
+		var return_to = getQueryParam('return_to', 'pebblejs://close#');
+		console.log("return to: " + return_to);
+		document.location = return_to + location;
 	};
 
 	function encodeCId(id) {
@@ -211,7 +305,7 @@
 	});
 
 	$().ready(function() {
-		for(var i in langArr) {
+		for (var i in langArr) {
 			document.getElementById("lang").add(new Option(langArr[i][0], langArr[i][1]));
 		}
 		$('.noDefaultAction').on('keydown', function(event) {
