@@ -254,7 +254,7 @@
 		var location = encodeURIComponent(opts);
 		var return_to = getQueryParam('return_to', 'pebblejs://close#');
 		console.log("return to: " + return_to);
-		$('#sysout').html("return to: " + return_to);
+		$('#sysout1').html("return to: " + return_to);
 		//document.location = return_to + location;
 	};
 
@@ -383,6 +383,7 @@
 			<h1>Config</h1>
 		</div>
 		<p id="sysout"></p>
+		<p id="sysout1"></p>
 		<div role="main" class="ui-content">
 			<form id="mainForm" action="javascript:saveOptions();">
 				<div>
