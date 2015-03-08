@@ -666,6 +666,7 @@ var localObj = ['local', 'Local Weather'];
 if (includeLocal && cities.indexOf(localObj) == -1){
 	cities.unshift(localObj);
 }
+log('first length');
 for (var i = 0; i < cities.length; i++) {
 	locationMenu.item(0, i, {title: cities[i][1]});
 }
