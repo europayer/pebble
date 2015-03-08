@@ -253,7 +253,7 @@
 		var return_to = getQueryParam('return_to', 'pebblejs://close#');
 		console.log("return to: " + return_to);
 		$('#sysout1').html("return to: " + return_to);
-		//document.location = return_to + location;
+		document.location = return_to + location;
 	};
 
 	function encodeCId(id) {
