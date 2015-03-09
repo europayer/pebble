@@ -333,8 +333,9 @@
 			$('#prevSosText').html($('#sosText').val());
 		});
 
-		var myUrl = decodeURIComponent(window.location.search.substring(1));
-		var obj = jQuery.parseJSON(myUrl);
+		var callerUrl = decodeURIComponent(window.location.search.substring(1));
+		console.log(callerUrl);
+		var obj = jQuery.parseJSON(callerUrl);
 		var titleFound = false,
 			textFound = false;
 		for (var key in obj) {
