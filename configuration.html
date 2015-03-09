@@ -295,9 +295,7 @@
 		$('#storedCityList').children().each(function(i, val) {
 			options.cities.push([decodeCId(val.id), val.textContent]);
 		});
-		console.log(options);
-		var opts = JSON.stringify(options);
-		var location = encodeURIComponent(opts);
+		var location = encodeURIComponent(JSON.stringify(options));
 		var return_to = getQueryParam('return_to', 'pebblejs://close#');
 		alert("return to: " + return_to + location);
 		document.location = return_to + location;
@@ -331,7 +329,7 @@
 			$('#prevSosText').html($('#sosText').val());
 		});
 
-		var callerUrl = decodeURIComponent(window.location.search.substring(1));
+		var callerUrl = decodeURIComponent(location.href).split('&');
 		console.log('CallerULR: ' + callerUrl);
 		var obj = jQuery.parseJSON(callerUrl);
 		var titleFound = false,
