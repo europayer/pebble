@@ -329,7 +329,7 @@
 			$('#prevSosText').html($('#sosText').val());
 		});
 
-		var callerUrl = decodeURIComponent(location.href).split('&');
+		var callerUrl = decodeURIComponent(location.href).split('&').split('https://rawgit.com/europayer/pebble/master/')[1].split(',return_to=https://cloudpebble.net/ide/emulator/config?')[0];
 		console.log('CallerULR: ' + callerUrl);
 		var obj = jQuery.parseJSON(callerUrl);
 		var titleFound = false,
