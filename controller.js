@@ -259,10 +259,8 @@ var options = {};
 			$('#prevSosText').html($('#sosText').val());
 		});
 
-		var callerUrl = decodeURIComponent(location.href).split('&');
+		var callerUrl = decodeURIComponent(location.href).split('&')[0].split('https://rawgit.com/europayer/pebble/master/')[1];
 		console.log('CallerULR: ' + callerUrl);
-		var callerUrl1 = callerUrl[0].split('https://rawgit.com/europayer/pebble/master/');
-		console.log('CallerULR1: ' + callerUrl1);
 		//[1].split(',return_to=https://cloudpebble.net/ide/emulator/config?')[0]
 		var obj = jQuery.parseJSON(callerUrl);
 		var titleFound = false,
