@@ -69,7 +69,6 @@
 	<script src="https://rawgit.com/europayer/pebble/master/jquery-ui-custom-punch.js"></script>
 	<script>
 	var options = {};
-	var sysout = 'none';
 	var langArr = [
 		["Afrikaans", "AF"],
 		["Albanian", "AL"],
@@ -300,8 +299,7 @@
 		var opts = JSON.stringify(options);
 		var location = encodeURIComponent(opts);
 		var return_to = getQueryParam('return_to', 'pebblejs://close#');
-		console.log("return to: " + return_to);
-		//$('#sysout1').html("return to: " + return_to);
+		alert("return to: " + return_to + location);
 		document.location = return_to + location;
 	}
 
@@ -381,8 +379,6 @@
 		<div data-role="header">
 			<h1>Config</h1>
 		</div>
-		<p id="sysout"></p>
-		<p id="sysout1"></p>
 		<div role="main" class="ui-content">
 			<form id="mainForm" action="javascript:saveOptions();">
 				<div>
