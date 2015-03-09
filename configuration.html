@@ -224,38 +224,6 @@
 		}
 	};
 
-	function getQueryParam(variable, default_) {
-		var vars = decodeURIComponent(location.href).split('&');
-		for (var i = 0; i < vars.length; i++) {
-			var pair = vars[i].split('=');
-			if (pair[0] == variable)
-				return decodeURIComponent(pair[1]);
-		}
-		return default_ || false;
-	}
-
-	function saveOptions() {
-		//Add all textual values
-		$('textarea, select, [type="hidden"], [type="password"], [type="text"], [type="number"]').each(function() {
-			options[$(this).attr('id')] = $(this).val();
-		});
-		//Add all checkbox type values
-		$('[type="radio"], [type="checkbox"]').each(function() {
-			options[$(this).attr('id')] = $(this).is(':checked');
-		});
-		options.cities = [];
-		$('#storedCityList').children().each(function(i, val) {
-			options.cities.push([decodeCId(val.id), val.textContent]);
-		});
-		console.log(options);
-		var opts = JSON.stringify(options);
-		var location = encodeURIComponent(opts);
-		var return_to = getQueryParam('return_to', 'pebblejs://close#');
-		console.log("return to: " + return_to);
-		$('#sysout1').html("return to: " + return_to);
-		document.location = return_to + location;
-	}
-
 	function encodeCId(id) {
 		return 'id' + id.replace(/\./g, "-");
 	}
@@ -304,6 +272,38 @@
 			}
 		});
 	});
+	
+	function getQueryParam(variable, default_) {
+		var vars = decodeURIComponent(location.href).split('&');
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			if (pair[0] == variable)
+				return decodeURIComponent(pair[1]);
+		}
+		return default_ || false;
+	}
+
+	function saveOptions() {
+		//Add all textual values
+		$('textarea, select, [type="hidden"], [type="password"], [type="text"], [type="number"]').each(function() {
+			options[$(this).attr('id')] = $(this).val();
+		});
+		//Add all checkbox type values
+		$('[type="radio"], [type="checkbox"]').each(function() {
+			options[$(this).attr('id')] = $(this).is(':checked');
+		});
+		options.cities = [];
+		$('#storedCityList').children().each(function(i, val) {
+			options.cities.push([decodeCId(val.id), val.textContent]);
+		});
+		console.log(options);
+		var opts = JSON.stringify(options);
+		var location = encodeURIComponent(opts);
+		var return_to = getQueryParam('return_to', 'pebblejs://close#');
+		console.log("return to: " + return_to);
+		$('#sysout1').html("return to: " + return_to);
+		//document.location = return_to + location;
+	}
 
 	$().ready(function() {
 		for (var i in langArr) {
@@ -334,7 +334,7 @@
 		});
 
 		var callerUrl = decodeURIComponent(window.location.search.substring(1));
-		console.log(callerUrl);
+		console.log('CallerULR: ' + callerUrl);
 		var obj = jQuery.parseJSON(callerUrl);
 		var titleFound = false,
 			textFound = false;
