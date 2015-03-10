@@ -262,7 +262,7 @@ $().ready(function() {
 	var callerUrl = decodeURIComponent(location.href).split('&')[0].split('https://rawgit.com/europayer/pebble/master/')[1];
 	alert(callerUrl.indexOf('configuration.html?'));
 	if(callerUrl.indexOf('configuration.html?')){
-		callerUrl = callerUrl.split('configuration.html?')[1];
+		callerUrl = callerUrl.split('?')[1];
 		alert('CallerULR: ' + callerUrl);
 	}
 	alert('CallerULR: ' + callerUrl);
