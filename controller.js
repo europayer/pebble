@@ -263,9 +263,9 @@ $().ready(function() {
 	alert(callerUrl.indexOf('configuration.html?'));
 	if(callerUrl.indexOf('configuration.html?')){
 		callerUrl = callerUrl.split('?')[1];
-		alert('CallerULR: ' + callerUrl);
+		alert('Url-Phone: ' + callerUrl);
 	}
-	alert('CallerULR: ' + callerUrl);
+	alert('Object: ' + callerUrl);
 	var obj = jQuery.parseJSON(callerUrl);
 	var titleFound = false,
 		textFound = false;
