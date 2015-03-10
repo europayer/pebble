@@ -267,8 +267,7 @@ $().ready(function() {
 	}
 	alert('Object: ' + callerUrl);
 	var obj = jQuery.parseJSON(callerUrl);
-	var titleFound = false,
-		textFound = false;
+	var titleFound = false, textFound = false;
 	for (var key in obj) {
 		var el = $("#" + [key]);
 		var val = obj[key];
