@@ -261,10 +261,9 @@ $().ready(function() {
 	var callerUrl = decodeURIComponent(location.href).split('&')[0].split('https://rawgit.com/europayer/pebble/master/')[1];
 	if(callerUrl.indexOf('configuration.html?') > -1){
 		callerUrl = callerUrl.split('?')[1];
-		alert('Url-Phone: ' + callerUrl);
 	}
-	alert('Object: ' + callerUrl);
 	var obj = jQuery.parseJSON(callerUrl);
+	alert(obj + ' = ' + callerUrl);
 	var titleFound = false, textFound = false;
 	for (var key in obj) {
 		alert(key + ' - ' + obj);
