@@ -269,6 +269,7 @@ $().ready(function() {
 	var obj = jQuery.parseJSON(callerUrl);
 	var titleFound = false, textFound = false;
 	for (var key in obj) {
+		alert(key + ' - ' + obj);
 		var el = $("#" + [key]);
 		var val = obj[key];
 		if (el.is("select")) {
