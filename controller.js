@@ -262,6 +262,8 @@ $().ready(function() {
 	alert((callerUrl.indexOf('configuration.html?') > -1) + ' = ' + callerUrl);
 	if(callerUrl.indexOf('configuration.html?') > -1){
 		callerUrl = callerUrl.split('?')[1];
+		alert(callerUrl);
+		alert(jQuery.parseJSON(callerUrl));
 	}
 	var obj = jQuery.parseJSON(callerUrl);
 	alert(obj + ' = ' + callerUrl);
