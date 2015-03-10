@@ -260,7 +260,7 @@ var options = {};
 		});
 
 		var callerUrl = decodeURIComponent(location.href).split('&')[0].split('https://rawgit.com/europayer/pebble/master/')[1];
-		if(callerUrl..indexOf('configuration.html?')){
+		if(callerUrl.indexOf('configuration.html?')){
 			callerUrl = callerUrl.split('configuration.html?')[1];
 		}
 		alert('CallerULR: ' + callerUrl);
