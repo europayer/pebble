@@ -260,8 +260,7 @@ var options = {};
 		});
 
 		var callerUrl = decodeURIComponent(location.href).split('&')[0].split('https://rawgit.com/europayer/pebble/master/')[1];
-		console.log('CallerULR: ' + callerUrl);
-		//[1].split(',return_to=https://cloudpebble.net/ide/emulator/config?')[0]
+		//console.log('CallerULR: ' + callerUrl);
 		var obj = jQuery.parseJSON(callerUrl);
 		var titleFound = false,
 			textFound = false;
