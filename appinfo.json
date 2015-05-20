@@ -30,159 +30,13 @@
                 "type": "font"
             },
             {
-                "file": "images/label.png",
-                "menuIcon": true,
-                "name": "IMAGES_LABEL_PNG",
+                "file": "images/gear.png",
+                "name": "IMAGES_GEAR_PNG",
                 "type": "png"
             },
             {
-                "file": "images/99n.png",
-                "name": "IMAGES_99N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/99.png",
-                "name": "IMAGES_99_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/09n.png",
-                "name": "IMAGES_09N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/09.png",
-                "name": "IMAGES_09_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/08n.png",
-                "name": "IMAGES_08N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/08.png",
-                "name": "IMAGES_08_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/07n.png",
-                "name": "IMAGES_07N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/07.png",
-                "name": "IMAGES_07_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/06n.png",
-                "name": "IMAGES_06N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/06.png",
-                "name": "IMAGES_06_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/05.png",
-                "name": "IMAGES_05_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/05n.png",
-                "name": "IMAGES_05N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/04n.png",
-                "name": "IMAGES_04N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/04.png",
-                "name": "IMAGES_04_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/03n.png",
-                "name": "IMAGES_03N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/03.png",
-                "name": "IMAGES_03_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/02n.png",
-                "name": "IMAGES_02N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/02.png",
-                "name": "IMAGES_02_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/01n.png",
-                "name": "IMAGES_01N_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/01.png",
-                "name": "IMAGES_01_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/temp.png",
-                "name": "IMAGES_TEMP_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/quickstart.png",
-                "name": "IMAGES_QUICKSTART_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/daily.png",
-                "name": "IMAGES_DAILY_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/hourly.png",
-                "name": "IMAGES_HOURLY_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/location.png",
-                "name": "IMAGES_LOCATION_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/height.png",
-                "name": "IMAGES_HEIGHT_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/humidity.png",
-                "name": "IMAGES_HUMIDITY_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/wind.png",
-                "name": "IMAGES_WIND_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/pecip.png",
-                "name": "IMAGES_PECIP_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/weather.png",
-                "name": "IMAGES_WEATHER_PNG",
+                "file": "images/sos.png",
+                "name": "IMAGES_SOS_PNG",
                 "type": "png"
             },
             {
@@ -191,12 +45,164 @@
                 "type": "png"
             },
             {
-                "file": "images/sos.png",
-                "name": "IMAGES_SOS_PNG",
+                "file": "images/weather.png",
+                "name": "IMAGES_WEATHER_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/pecip.png",
+                "name": "IMAGES_PECIP_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/wind.png",
+                "name": "IMAGES_WIND_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/humidity.png",
+                "name": "IMAGES_HUMIDITY_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/height.png",
+                "name": "IMAGES_HEIGHT_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/location.png",
+                "name": "IMAGES_LOCATION_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/hourly.png",
+                "name": "IMAGES_HOURLY_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/daily.png",
+                "name": "IMAGES_DAILY_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/quickstart.png",
+                "name": "IMAGES_QUICKSTART_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/temp.png",
+                "name": "IMAGES_TEMP_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/01.png",
+                "name": "IMAGES_01_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/01n.png",
+                "name": "IMAGES_01N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/02.png",
+                "name": "IMAGES_02_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/02n.png",
+                "name": "IMAGES_02N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/03.png",
+                "name": "IMAGES_03_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/03n.png",
+                "name": "IMAGES_03N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/04.png",
+                "name": "IMAGES_04_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/04n.png",
+                "name": "IMAGES_04N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/05n.png",
+                "name": "IMAGES_05N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/05.png",
+                "name": "IMAGES_05_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/06.png",
+                "name": "IMAGES_06_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/06n.png",
+                "name": "IMAGES_06N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/07.png",
+                "name": "IMAGES_07_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/07n.png",
+                "name": "IMAGES_07N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/08.png",
+                "name": "IMAGES_08_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/08n.png",
+                "name": "IMAGES_08N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/09.png",
+                "name": "IMAGES_09_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/09n.png",
+                "name": "IMAGES_09N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/99.png",
+                "name": "IMAGES_99_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/99n.png",
+                "name": "IMAGES_99N_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/label.png",
+                "menuIcon": true,
+                "name": "IMAGES_LABEL_PNG",
                 "type": "png"
             }
         ]
     },
+    "sdkVersion": "3",
     "shortName": "WeatherGraph",
     "uuid": "54e15780-1282-47ad-bbaf-296ac1511e30",
     "versionCode": 1,

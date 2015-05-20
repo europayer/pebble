@@ -1,4 +1,7 @@
 /*
+
+Example: https://github.com/fletchto99/uOttawa-Card-Pebble
+
 var GetProps = function(obj) {
 	this.getProperties = function() {
 		var properties = [];
@@ -34,32 +37,63 @@ var log = function(txt) {
 	console.log("---------> " + txt);
 };
 
+var defaultTitle = 'Configure first!';
+var defaultText = 'Please go to the settings in the pebble-app on your phone to configure this watchapp';
 var storedData = Settings.option();
-//var localOptions = Settings.data();
 var saveUrl = 'https://rawgit.com/europayer/pebble/master/configuration.html?' + encodeURIComponent(JSON.stringify(storedData));
+log(saveUrl);
 Settings.config({
 		url: saveUrl,
 		autoSave: true
 	},
 	function(e) {
-		log('Saved options:' + JSON.stringify(e.options));
+		log('Saved options from WEB-GUI:' + decodeURIComponent(JSON.stringify(e.options)));
 		Settings.option(e.options);
+		
 		// Show the raw response if parsing failed
 		if (e.failed) {
-			log(e.response);
+			log('Saving options failed: ' + JSON.stringify(e));
 		}
 	}
 );
-storedData = Settings.option();
+log('Stored data: ' + JSON.stringify(storedData));
+var lang = storedData.lang;
 var key = storedData.key;
+var cities = storedData.cities || [0, 0];
 var includeLocal = storedData.Y;
+var fahrenheit = storedData.F;
+var sosTitle = storedData.sosTitle || defaultTitle;
+var sosBody = storedData.sosText || defaultText;
+
+log('lang=' + lang);
+log('key=' + key);
+log('cities=' + cities);
+log('includeLocal=' + includeLocal);
+log('fahrenheit=' + fahrenheit);
+log('sosTitle=' + sosTitle);
+log('sosBody=' + sosBody);
+var configureCard = new UI.Card({
+	fullscreen: true,
+	icon: 'images/gear.png',
+	title: defaultTitle,
+	body: defaultText,
+	scrollable: true
+});
+var sosCard = new UI.Card({
+	fullscreen: true,
+	icon: 'images/sos.png',
+	title: sosTitle,
+	body: sosBody,
+	scrollable: true
+});
+
 var unitHourly = 'metric';
 var unitTemp = 'celsius';
 var unitTempShort = 'C';
 var unitSpeed = 'kph';
 var unitHeight = 'mm';
 var fcttext = 'fcttext_metric';
-if (storedData.F){
+if (fahrenheit){
 	unitHourly = 'english';
 	unitTemp = 'fahrenheit';
 	unitTempShort = 'F';
@@ -67,7 +101,6 @@ if (storedData.F){
 	unitHeight = 'in';
 	fcttext = 'fcttext';
 }
-
 var iconSet  = {
 	"chanceflurries": "09",
 	"chancerain": "05",
@@ -421,7 +454,7 @@ function getWeatherData(locationId, location, e) {
 			"dataValues": dataValues,
 			"scale": scale
 		};
-		var urlHead = 'http://api.wunderground.com/api/' + key + '/lang:' + storedData.lang + '/';
+		var urlHead = 'http://api.wunderground.com/api/' + key + '/lang:' + lang + '/';
 		var urlDaily = urlHead + 'forecast10day/q/';
 		var urlHourly = urlHead + 'hourly/q/';
 		var urlEnd = '.json';
@@ -658,18 +691,19 @@ function showGraph(type, values, scale, legendText, wD) {
 	});
 }
 
+var localObj = ['local', 'Local Weather'];
+if (includeLocal && cities.indexOf(localObj) != -1){
+	cities.unshift(localObj);
+}
+
 var locationMenu = new UI.Menu({
 	fullscreen: true
 });
-var cities = storedData.cities;
-var localObj = ['local', 'Local Weather'];
-if (includeLocal && cities.indexOf(localObj) == -1){
-	cities.unshift(localObj);
-}
-log('first length');
+
 for (var i = 0; i < cities.length; i++) {
 	locationMenu.item(0, i, {title: cities[i][1]});
 }
+
 locationMenu.on('select', function(e) {
 	var location = e.item.title;
 	var locationId = encodeCId(cities[e.itemIndex][0]);
@@ -699,11 +733,8 @@ locationMenu.on('select', function(e) {
 });
 var mainMenu = new UI.Menu({
 	sections: [{
-		items: [{
-			title: 'Quickstart',
-			icon: 'images/quickstart.png',
-			subtitle: 'Personal Screen'
-		}, {
+		items: [
+		{
 			title: 'Weather',
 			icon: 'images/weather.png',
 			subtitle: 'Weather Graphs'
@@ -711,23 +742,27 @@ var mainMenu = new UI.Menu({
 			title: 'SOS-Screen',
 			icon: 'images/sos.png',
 			subtitle: 'Emergency Info'
-		}]
+		}
+		//{
+		//	title: 'Quickstart',
+		//	icon: 'images/quickstart.png',
+		//	subtitle: 'Personal Screen'
+		//},
+		]
 	}],
 	fullscreen: true
 });
 mainMenu.on('select', function(e) {
 	if (e.itemIndex === 0) {
+		if (cities.length === 0 || !lang || !key){
+			configureCard.show();
+		} else {
+			locationMenu.show();
+		}
 	} else if (e.itemIndex === 1) {
-		locationMenu.show();		
-	} else if (e.itemIndex === 2) {
-		var sosCard = new UI.Card({
-			fullscreen: true,
-			icon: 'images/sos.png',
-			title: storedData.sosTitle,
-			body: storedData.sosText,
-			scrollable: true
-		});
 		sosCard.show();
+	} else if (e.itemIndex === 2) {
+		//QUICKSTART
 	}
 });
 mainMenu.show();
